@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://imranahamed.com/sitemap-index.xml

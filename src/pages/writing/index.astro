@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import { getCollection } from 'astro:content';
+
+const essays = (await getCollection('writing', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout
+  title="Writing"
+  description="Essays on applied AI/ML — multi-agent systems, RAG in production, eval design."
+>
+  <header class="mb-10">
+    <h1 class="text-[34px] font-semibold tracking-tight">Writing</h1>
+    <p class="mt-3 text-[17px] text-[color:var(--color-ink-muted)]">
+      Field notes on applied AI/ML. What actually ships vs. what demos.
+    </p>
+  </header>
+
+  {
+    essays.length === 0 ? (
+      <p class="text-[color:var(--color-ink-muted)]">No essays published yet.</p>
+    ) : (
+      <div>
+        {essays.map((essay) => (
+          <EssayCard
+            title={essay.data.title}
+            description={essay.data.description}
+            pubDate={essay.data.pubDate}
+            href={`/writing/${essay.id}/`}
+            tags={essay.data.tags}
+          />
+        ))}
+      </div>
+    )
+  }
+</BaseLayout>

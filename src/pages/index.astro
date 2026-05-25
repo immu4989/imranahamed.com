@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EssayCard from '../components/EssayCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { SOCIAL } from '../consts.ts';
+
+const essays = (await getCollection('writing', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="mb-16">
+    <h1 class="text-[34px] font-semibold tracking-tight leading-tight">Imran Ahamed</h1>
+    <p class="mt-4 text-[18px] text-[color:var(--color-ink-muted)] leading-relaxed">
+      I build applied AI/ML systems. Currently co-founding
+      <a href={SOCIAL.vezran} target="_blank" rel="noopener noreferrer">VEZRAN</a> —
+      agentic AI for security operations. Previously: Senior Data Scientist at Starbucks and FedEx.
+      Half my career was pre-LLM ML.
+    </p>
+    <p class="mt-4 text-[18px] text-[color:var(--color-ink-muted)] leading-relaxed">
+      Focused on multi-agent systems and RAG pipelines that survive contact with production.
+      I write about the unglamorous parts — eval design, infrastructure, what actually ships.
+    </p>
+  </section>
+
+  <section class="mb-16">
+    <div class="flex items-baseline justify-between mb-2">
+      <h2 class="text-[14px] font-mono uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+        Writing
+      </h2>
+      <a href="/writing" class="text-[13px] font-mono">all →</a>
+    </div>
+    {
+      essays.length === 0 ? (
+        <p class="text-[color:var(--color-ink-muted)] py-4">No essays yet.</p>
+      ) : (
+        essays.map((essay) => (
+          <EssayCard
+            title={essay.data.title}
+            description={essay.data.description}
+            pubDate={essay.data.pubDate}
+            href={`/writing/${essay.id}/`}
+            tags={essay.data.tags}
+          />
+        ))
+      )
+    }
+  </section>
+
+  <section class="mb-16">
+    <div class="flex items-baseline justify-between mb-2">
+      <h2 class="text-[14px] font-mono uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+        Projects
+      </h2>
+      <a href="/projects" class="text-[13px] font-mono">all →</a>
+    </div>
+    {
+      projects.length === 0 ? (
+        <p class="text-[color:var(--color-ink-muted)] py-4">No projects yet.</p>
+      ) : (
+        projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            role={project.data.role}
+            stack={project.data.stack}
+            href={`/projects/${project.id}/`}
+            externalLink={project.data.link}
+          />
+        ))
+      )
+    }
+  </section>
+
+  <section class="border-t border-[var(--color-rule)] pt-8">
+    <h2 class="text-[14px] font-mono uppercase tracking-wider text-[color:var(--color-ink-muted)] mb-3">
+      Newsletter
+    </h2>
+    <p class="text-[16px] text-[color:var(--color-ink-muted)] leading-relaxed mb-4">
+      Field notes on applied AI — agent eval, RAG in production, what the demos leave out.
+      No threads. No hot takes.
+    </p>
+    <form
+      action="#"
+      method="post"
+      class="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:max-w-md"
+    >
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="you@example.com"
+        class="flex-1 px-3 py-2 text-[15px] border border-[var(--color-rule)] rounded-md bg-transparent focus:outline-none focus:border-[color:var(--color-accent)]"
+      />
+      <button
+        type="submit"
+        class="px-4 py-2 text-[15px] font-medium rounded-md bg-[color:var(--color-ink)] text-[color:var(--color-paper)] hover:opacity-90"
+      >
+        Subscribe
+      </button>
+    </form>
+    <p class="mt-2 text-[12px] text-[color:var(--color-ink-faint)] font-mono">
+      TODO: wire form action to Substack / Buttondown
+    </p>
+  </section>
+</BaseLayout>

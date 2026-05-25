@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  role?: string;
+  stack?: string[];
+  href: string;
+  externalLink?: string;
+}
+const { title, description, role, stack = [], href, externalLink } = Astro.props;
+---
+
+<article class="py-5 border-b border-[var(--color-rule)] last:border-0">
+  <div class="flex items-baseline justify-between gap-4 mb-1">
+    <h3 class="text-[17px] font-medium tracking-tight">
+      <a href={href} class="text-[color:var(--color-ink)] hover:text-[color:var(--color-accent)] no-underline hover:no-underline">
+        {title}
+      </a>
+    </h3>
+    {role && <span class="text-[13px] text-[color:var(--color-ink-faint)] font-mono">{role}</span>}
+  </div>
+  <p class="text-[15px] text-[color:var(--color-ink-muted)] leading-snug mb-2">
+    {description}
+  </p>
+  <div class="flex items-center justify-between flex-wrap gap-2">
+    {
+      stack.length > 0 && (
+        <div class="flex flex-wrap gap-x-3 gap-y-1">
+          {stack.map((tech) => (
+            <span class="text-[12px] text-[color:var(--color-ink-faint)] font-mono">{tech}</span>
+          ))}
+        </div>
+      )
+    }
+    {
+      externalLink && (
+        <a href={externalLink} target="_blank" rel="noopener noreferrer" class="text-[13px] font-mono">
+          {externalLink.replace(/^https?:\/\/(www\.)?/, '')} ↗
+        </a>
+      )
+    }
+  </div>
+</article>

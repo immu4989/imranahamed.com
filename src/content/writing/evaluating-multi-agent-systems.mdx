@@ -1,0 +1,79 @@
+---
+title: "Evaluating multi-agent systems when ground truth is incomplete"
+description: "Three eval modes — output, trajectory, and side effect — and the practical pattern we use when there's no single right answer."
+pubDate: 2026-05-25
+tags: ["agents", "eval", "production-ml"]
+draft: false
+---
+
+The standard ML eval setup assumes a labeled test set. You have inputs, you have correct outputs, you compare. When that breaks down — and for agentic systems it breaks down almost immediately — most teams panic and either over-test on toy examples or stop measuring entirely.
+
+This post is about what we do instead.
+
+## Why ground truth doesn't exist for agents
+
+A typical security-triage agent might:
+
+1. Pull context from five different APIs
+2. Decide which two are relevant
+3. Run a query against one of them
+4. Update its working memory
+5. Recommend an action
+6. Write a justification
+
+There is no single "correct" trajectory. Two senior analysts will solve the same alert differently, both correctly. The output (recommended action) is sometimes the same across very different paths, and sometimes the path matters more than the answer — an investigation that took the wrong data shortcut still produced the right call this time, but won't tomorrow.
+
+If you only grade the final answer, you'll ship agents that get lucky in eval and brittle in production.
+
+## Three eval modes — pick all three
+
+We run agents through three independent eval lenses. They catch different failure modes.
+
+### 1. Output eval
+
+The classic one. Did the recommendation match the analyst's call? Did the answer cite the right ticket? Did the JSON parse?
+
+This is necessary but insufficient. It's also the only one most teams do. If you stop here, you're grading the cover of the book.
+
+Tools that work: LLM-as-judge for free-form outputs, exact-match or rubric scoring for structured outputs, Ragas for RAG-style answer quality.
+
+### 2. Trajectory eval
+
+Did the agent take a reasonable path? Did it skip a required step? Did it call a tool with arguments that don't match the schema? Did it loop?
+
+The simplest version: maintain a small library of "golden trajectories" — runs that a senior operator inspected and approved. New runs are diffed against the nearest neighbor in trajectory space. You're not asserting the new path must match exactly — you're flagging when it deviates in ways that historically indicate bugs.
+
+The harder version is structural: define invariants the trajectory must satisfy (e.g., *if the agent recommends an action, it must have read the relevant evidence first*) and check those invariants programmatically across every run.
+
+### 3. Side-effect eval
+
+What did the agent *do*? Did it write something? Authorize something? Cost something?
+
+If your agent has tool access in production, its real eval is the diff it produced on the world. Track latency, cost, tokens, rate of human override, rate of post-hoc reversal. The last two are gold: if humans frequently override or revert agent actions, your output eval said the system was working and you were wrong.
+
+## The pattern: composite scoring
+
+We don't pick one mode and call it done. A single run produces three scores — output, trajectory, side-effect — and we look at the joint distribution.
+
+Three failure modes show up clearly:
+
+- **High output, low trajectory.** The agent is getting the right answer by luck or by overfitting to the eval set. Brittle. Will break in production.
+- **High trajectory, low output.** The agent is following correct procedure but the procedure is wrong, or its tool outputs are misleading it. Fix the tools or the procedure, not the agent.
+- **High output + trajectory, low side-effect.** The eval thinks it's working but humans keep overriding. Your eval set doesn't match production distribution.
+
+The first failure mode is the most expensive to find late. Build trajectory eval first if you only have time for two.
+
+## What I'm not telling you
+
+I'm being deliberately vague about exact prompts, scoring rubrics, and which tools we use in the current build. Some of that is competitive, some of it changes weekly. The principles above outlast the implementations.
+
+The thing I'd push back hardest on: do not skip eval because it's hard. The teams that ship agentic systems and the teams that ship demos diverge here, and the gap compounds. Every model upgrade, every prompt change, every new tool integration breaks something. Without a measurement system you can run on every change, you're not engineering — you're vibe-checking.
+
+## Further reading
+
+If this is useful, two follow-ups I want to write:
+
+- *Golden trajectories: how to seed and maintain them without a labeling team*
+- *The cost of LLM-as-judge: when it's worth it and when it isn't*
+
+If you want either sooner, the [newsletter](/) is the fastest way to find out when they land.

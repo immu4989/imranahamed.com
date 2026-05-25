@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected work — VEZRAN / Zyberpol, open-source contributions, past production ML."
+>
+  <header class="mb-10">
+    <h1 class="text-[34px] font-semibold tracking-tight">Projects</h1>
+    <p class="mt-3 text-[17px] text-[color:var(--color-ink-muted)]">
+      Selected work — current and past.
+    </p>
+  </header>
+
+  {
+    projects.length === 0 ? (
+      <p class="text-[color:var(--color-ink-muted)]">No projects published yet.</p>
+    ) : (
+      <div>
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            role={project.data.role}
+            stack={project.data.stack}
+            href={`/projects/${project.id}/`}
+            externalLink={project.data.link}
+          />
+        ))}
+      </div>
+    )
+  }
+</BaseLayout>
