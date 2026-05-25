@@ -1,0 +1,40 @@
+---
+import { NEWSLETTER } from '../consts.ts';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+
+const action = `${NEWSLETTER.substack}/subscribe`;
+---
+
+<form
+  action={action}
+  method="GET"
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[
+    'flex flex-col gap-3 sm:flex-row sm:items-stretch',
+    compact ? 'sm:max-w-sm' : 'sm:max-w-md',
+  ]}
+>
+  <input
+    type="email"
+    name="email"
+    required
+    autocomplete="email"
+    placeholder="you@domain.com"
+    aria-label="Email address"
+    class="flex-1 px-3 py-2 text-[15px] border border-[var(--color-rule)] rounded-md bg-transparent focus:outline-none focus:border-[color:var(--color-accent)] focus:ring-1 focus:ring-[color:var(--color-accent)]"
+  />
+  <button
+    type="submit"
+    class="px-4 py-2 text-[15px] font-medium rounded-md bg-[color:var(--color-ink)] text-[color:var(--color-paper)] hover:opacity-90 transition-opacity whitespace-nowrap"
+  >
+    Subscribe
+  </button>
+</form>
+<p class="mt-2 text-[12px] text-[color:var(--color-ink-faint)]">
+  Hosted on Substack. One click to confirm. No spam.
+</p>

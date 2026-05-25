@@ -17,6 +17,12 @@ export const SOCIAL = {
   zyberpol: 'https://www.zyberpol.com',
 } as const;
 
+// Update to your real Substack publication URL once created.
+// Form sends visitors to <NEWSLETTER>/subscribe?email=<their email> — Substack handles confirmation.
+export const NEWSLETTER = {
+  substack: 'https://imranahamed.substack.com',
+} as const;
+
 export const NAV = [
   { href: '/', label: 'Home' },
   { href: '/writing', label: 'Writing' },

@@ -5,6 +5,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import Avatar from '../components/Avatar.astro';
 import StatLine from '../components/StatLine.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
 import { getCollection } from 'astro:content';
 import { SOCIAL } from '../consts.ts';
 import { readingTime } from '../utils/reading-time.ts';
@@ -144,27 +145,6 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
       Field notes on applied AI — agent eval, RAG in production, what the demos leave out.
       One essay every couple of weeks. No spam.
     </p>
-    <form
-      action="#"
-      method="post"
-      class="flex flex-col gap-3 sm:flex-row sm:items-stretch sm:max-w-md"
-    >
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="you@domain.com"
-        class="flex-1 px-3 py-2 text-[15px] border border-[var(--color-rule)] rounded-md bg-transparent focus:outline-none focus:border-[color:var(--color-accent)]"
-      />
-      <button
-        type="submit"
-        class="px-4 py-2 text-[15px] font-medium rounded-md bg-[color:var(--color-ink)] text-[color:var(--color-paper)] hover:opacity-90"
-      >
-        Subscribe
-      </button>
-    </form>
-    <p class="mt-2 text-[12px] text-[color:var(--color-ink-faint)] font-mono">
-      TODO: wire form action to Substack / Buttondown
-    </p>
+    <NewsletterForm />
   </section>
 </BaseLayout>
