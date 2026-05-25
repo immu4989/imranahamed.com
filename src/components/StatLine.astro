@@ -1,0 +1,18 @@
+---
+import { STATS } from '../consts.ts';
+---
+
+<dl class="grid grid-cols-3 gap-6 border-y border-[var(--color-rule)] py-5 my-8">
+  {
+    STATS.map((stat) => (
+      <div>
+        <dt class="text-[12px] uppercase tracking-wider font-mono text-[color:var(--color-ink-faint)] mb-1">
+          {stat.label}
+        </dt>
+        <dd class="text-[26px] tabular font-medium tracking-tight text-[color:var(--color-ink)] leading-none">
+          {stat.value}
+        </dd>
+      </div>
+    ))
+  }
+</dl>

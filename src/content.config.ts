@@ -9,6 +9,18 @@ const writing = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
+    featured: z.boolean().default(false),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const notes = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/notes' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
   }),
 });
@@ -23,10 +35,11 @@ const projects = defineCollection({
     stack: z.array(z.string()).default([]),
     link: z.string().url().optional(),
     repo: z.string().url().optional(),
+    status: z.enum(['active', 'shipped', 'archived']).default('shipped'),
     featured: z.boolean().default(false),
     order: z.number().default(100),
     draft: z.boolean().default(false),
   }),
 });
 
-export const collections = { writing, projects };
+export const collections = { writing, notes, projects };

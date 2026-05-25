@@ -3,8 +3,17 @@ title: "Evaluating multi-agent systems when ground truth is incomplete"
 description: "Three eval modes — output, trajectory, and side effect — and the practical pattern we use when there's no single right answer."
 pubDate: 2026-05-25
 tags: ["agents", "eval", "production-ml"]
+featured: true
 draft: false
 ---
+
+import Callout from '../../components/Callout.astro';
+
+<Callout type="tldr">
+Three eval modes &mdash; output, trajectory, side-effect. Score every run on all three.
+Look at the joint distribution. If you only grade the final answer, you'll ship agents
+that pass eval and break in production.
+</Callout>
 
 The standard ML eval setup assumes a labeled test set. You have inputs, you have correct outputs, you compare. When that breaks down — and for agentic systems it breaks down almost immediately — most teams panic and either over-test on toy examples or stop measuring entirely.
 
@@ -67,7 +76,12 @@ The first failure mode is the most expensive to find late. Build trajectory eval
 
 I'm being deliberately vague about exact prompts, scoring rubrics, and which tools we use in the current build. Some of that is competitive, some of it changes weekly. The principles above outlast the implementations.
 
-The thing I'd push back hardest on: do not skip eval because it's hard. The teams that ship agentic systems and the teams that ship demos diverge here, and the gap compounds. Every model upgrade, every prompt change, every new tool integration breaks something. Without a measurement system you can run on every change, you're not engineering — you're vibe-checking.
+<Callout type="warning" title="Do not skip eval">
+The teams that ship agentic systems and the teams that ship demos diverge here, and the
+gap compounds. Every model upgrade, every prompt change, every new tool integration breaks
+something. Without a measurement system you can run on every change, you&rsquo;re not
+engineering &mdash; you&rsquo;re vibe-checking.
+</Callout>
 
 ## Further reading
 

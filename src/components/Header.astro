@@ -6,16 +6,21 @@ function isActive(href: string) {
   if (href === '/') return currentPath === '/';
   return currentPath === href || currentPath.startsWith(href + '/');
 }
+
+const navItems = NAV.filter((item) => item.href !== '/');
 ---
 
-<header class="border-b border-[var(--color-rule)]">
-  <div class="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-    <a href="/" class="font-medium tracking-tight text-[color:var(--color-ink)] no-underline hover:no-underline">
+<header class="border-b border-[var(--color-rule)] backdrop-blur-md sticky top-0 z-10 bg-[color:var(--color-paper)]/85">
+  <div class="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
+    <a
+      href="/"
+      class="font-semibold tracking-tight text-[color:var(--color-ink)] no-underline hover:no-underline text-[15px]"
+    >
       {SITE.title}
     </a>
-    <nav class="flex gap-5 text-[15px]">
+    <nav class="flex gap-x-5 text-[14px]">
       {
-        NAV.filter((item) => item.href !== '/').map((item) => (
+        navItems.map((item) => (
           <a
             href={item.href}
             class:list={[

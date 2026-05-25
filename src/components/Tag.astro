@@ -1,0 +1,25 @@
+---
+interface Props {
+  tag: string;
+  href?: string;
+  size?: 'sm' | 'md';
+}
+const { tag, href, size = 'sm' } = Astro.props;
+
+const sizeClass =
+  size === 'md'
+    ? 'text-[13px] px-2.5 py-0.5'
+    : 'text-[11.5px] px-2 py-[1px]';
+
+const classes = `inline-flex items-center font-mono ${sizeClass} bg-[color:var(--color-tag-bg)] text-[color:var(--color-tag-ink)] rounded-full border border-[var(--color-rule)] no-underline hover:no-underline hover:border-[var(--color-rule-strong)]`;
+---
+
+{
+  href ? (
+    <a href={href} class={classes}>
+      {tag}
+    </a>
+  ) : (
+    <span class={classes}>{tag}</span>
+  )
+}

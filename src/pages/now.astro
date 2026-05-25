@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const updated = '2026-05-25';
+---
+
+<BaseLayout
+  title="Now"
+  description="What I'm focused on right now."
+>
+  <article class="prose-essay">
+    <header class="mb-8 not-prose">
+      <h1 class="text-[40px] font-semibold tracking-tight">Now</h1>
+      <p class="mt-2 text-[14px] text-[color:var(--color-ink-faint)] font-mono">
+        Updated {updated} · what I&rsquo;m focused on this month
+      </p>
+      <p class="mt-3 text-[15.5px] text-[color:var(--color-ink-muted)] leading-relaxed">
+        Inspired by Derek Sivers&rsquo;
+        <a href="https://nownownow.com" target="_blank" rel="noopener noreferrer">/now</a> convention.
+        Not a status feed. More like &mdash; if we caught up over coffee, this is what I&rsquo;d say
+        I&rsquo;m working on.
+      </p>
+    </header>
+
+    <h2>Building</h2>
+    <ul>
+      <li>
+        <strong>Zyberpol agent eval framework.</strong> Designing how we measure correctness
+        for the Correlation and Investigation agents when there&rsquo;s no single right
+        trajectory. See <a href="/writing/evaluating-multi-agent-systems/">the essay</a> for
+        the broad shape.
+      </li>
+      <li>
+        <strong>RAG infrastructure for security context.</strong> Alert history, runbooks,
+        threat intel, environment graph. The retrieval quality is what makes the agents
+        useful or useless.
+      </li>
+    </ul>
+
+    <h2>Writing</h2>
+    <ul>
+      <li>Drafting a follow-up to the multi-agent eval essay on golden trajectories.</li>
+      <li>Working on a short piece on RAG eval limits &mdash; what Ragas and Phoenix don&rsquo;t cover.</li>
+    </ul>
+
+    <h2>Reading</h2>
+    <ul>
+      <li>Whatever new agent/eval paper got dropped this week.</li>
+      <li>Going slowly through Lilian Weng&rsquo;s LLM-agent writeups again with current production eyes.</li>
+    </ul>
+
+    <h2>Not doing</h2>
+    <ul>
+      <li>Twitter/X. Job interviews. Side projects unrelated to VEZRAN.</li>
+    </ul>
+  </article>
+</BaseLayout>

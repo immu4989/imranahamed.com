@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Avatar from '../components/Avatar.astro';
 import { SOCIAL } from '../consts.ts';
 ---
 
@@ -7,56 +8,69 @@ import { SOCIAL } from '../consts.ts';
   title="About"
   description="Imran Ahamed — applied AI/ML engineer, co-founder at VEZRAN, ex-Starbucks, ex-FedEx."
 >
-  <article class="prose-essay">
-    <h1 class="text-[34px] font-semibold tracking-tight mb-6">About</h1>
+  <header class="flex items-start gap-5 mb-8">
+    <Avatar size={72} />
+    <div class="flex-1 min-w-0">
+      <h1 class="text-[40px] font-semibold tracking-tight leading-[1.05]">About</h1>
+      <p class="mt-3 text-[17px] text-[color:var(--color-ink-muted)]">
+        Applied AI/ML engineer. Currently co-founding VEZRAN. Based in Richardson, TX.
+      </p>
+    </div>
+  </header>
 
+  <article class="prose-essay">
     <p>
-      I build applied AI/ML systems. Started in 2014 on banking data engineering at TCS; the last 8+ years have been
-      production ML — first at FedEx, then Starbucks, now co-founding VEZRAN.
+      I build applied AI/ML systems. Started in 2014 on banking data engineering at TCS;
+      the last 8+ years have been production ML &mdash; first at FedEx, then Starbucks,
+      now co-founding <a href={SOCIAL.vezran} target="_blank" rel="noopener noreferrer">VEZRAN</a>.
     </p>
 
     <h2>What I focus on</h2>
     <p>
-      Multi-agent systems and RAG pipelines that survive contact with production. Agent orchestration on frontier
-      LLMs (Claude, GPT-4o, Gemini), eval design when ground truth is incomplete, and the unglamorous infrastructure
-      — latency, cost, fallback paths — that decides whether agents actually ship.
+      Multi-agent systems and RAG pipelines that survive contact with production. Agent
+      orchestration on frontier LLMs (Claude, GPT-4o, Gemini), eval design when ground
+      truth is incomplete, and the unglamorous infrastructure &mdash; latency, cost,
+      fallback paths &mdash; that decides whether agents actually ship.
     </p>
 
     <h2>What I&rsquo;m building now</h2>
     <p>
       Co-founder and Head of AI/ML at <a href={SOCIAL.vezran} target="_blank" rel="noopener noreferrer">VEZRAN</a>.
-      We&rsquo;re shipping <strong>Zyberpol</strong>, an agentic SOC platform with four working agents — Correlation,
-      Investigation, Triage, Remediation — sitting on top of CrowdStrike, Okta, Splunk, and AWS. The differentiator:
+      We&rsquo;re shipping <a href={SOCIAL.zyberpol} target="_blank" rel="noopener noreferrer">Zyberpol</a>,
+      an agentic SOC platform with four working agents &mdash; Correlation, Investigation, Triage,
+      Remediation &mdash; sitting on top of CrowdStrike, Okta, Splunk, and AWS. The differentiator:
       signed, audit-ready evidence for every action. Pre-seed, hiring.
     </p>
 
     <h2>What I shipped before</h2>
     <ul>
       <li>
-        <strong>Starbucks — Senior Data Scientist, People Analytics (2022–2025).</strong> Turnover prediction and
-        headcount forecasting models across the US retail footprint. BERT/T5 NLP on contact-center data: topic
-        modeling, summarization, semantic search.
+        <strong>Starbucks &mdash; Senior Data Scientist, People Analytics (2022&ndash;2025).</strong>
+        Turnover prediction and headcount forecasting models across the US retail footprint.
+        BERT/T5 NLP on contact-center data: topic modeling, summarization, semantic search.
       </li>
       <li>
-        <strong>FedEx — Senior Data Scientist (2018–2022).</strong> Package-at-risk and loss-intensity models in
-        production on Azure across the logistics network. GDPR-compliant data matching at 95% retrieval. Fraud
-        detection across shipping patterns.
+        <strong>FedEx &mdash; Senior Data Scientist (2018&ndash;2022).</strong>
+        Package-at-risk and loss-intensity models in production on Azure across the logistics
+        network. GDPR-compliant data matching at 95% retrieval. Fraud detection across
+        shipping patterns.
       </li>
       <li>
-        <strong>TCS — Systems / Data Engineer (2011–2014).</strong> Banking application engineering and
-        automation work in Bengaluru.
+        <strong>TCS &mdash; Systems / Data Engineer (2011&ndash;2014).</strong>
+        Banking application engineering and automation work in Bengaluru.
       </li>
     </ul>
 
     <h2>Stack</h2>
     <p>
-      Python, PyTorch, Transformers, LangChain / LangGraph, Azure ML, Databricks, MLflow, Ragas, Phoenix, Tableau.
+      Python, PyTorch, Transformers, LangChain / LangGraph, Azure ML, Databricks, MLflow,
+      Ragas, Phoenix, Tableau.
     </p>
 
     <h2>Education</h2>
     <ul>
-      <li>MS, Business Analytics — The University of Texas at Dallas (2016–2017)</li>
-      <li>BE, Information Science &amp; Engineering — NMAM Institute of Technology, NITTE (2007–2011)</li>
+      <li>MS, Business Analytics &mdash; The University of Texas at Dallas (2016&ndash;2017)</li>
+      <li>BE, Information Science &amp; Engineering &mdash; NMAM Institute of Technology, NITTE (2007&ndash;2011)</li>
     </ul>
 
     <h2>Elsewhere</h2>

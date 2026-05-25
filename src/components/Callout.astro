@@ -1,0 +1,28 @@
+---
+interface Props {
+  type?: 'note' | 'warning' | 'tip' | 'tldr';
+  title?: string;
+}
+const { type = 'note', title } = Astro.props;
+
+const config = {
+  note:    { label: 'Note',    border: '#94a3b8', bg: 'rgba(148,163,184,0.08)' },
+  warning: { label: 'Warning', border: '#f59e0b', bg: 'rgba(245,158,11,0.08)' },
+  tip:     { label: 'Tip',     border: '#10b981', bg: 'rgba(16,185,129,0.08)' },
+  tldr:    { label: 'TL;DR',   border: '#2563eb', bg: 'rgba(37,99,235,0.08)' },
+}[type];
+
+const heading = title ?? config.label;
+---
+
+<aside
+  class="my-6 rounded-lg border-l-4 px-4 py-3"
+  style={`border-left-color: ${config.border}; background: ${config.bg};`}
+>
+  <div class="text-[12px] uppercase tracking-wider font-mono mb-1" style={`color: ${config.border};`}>
+    {heading}
+  </div>
+  <div class="text-[15.5px] leading-relaxed">
+    <slot />
+  </div>
+</aside>

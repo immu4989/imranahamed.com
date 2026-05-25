@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import EssayLayout from '../../layouts/EssayLayout.astro';
+import { readingTime } from '../../utils/reading-time.ts';
 
 export async function getStaticPaths() {
   const essays = await getCollection('writing', ({ data }) => !data.draft);
@@ -11,7 +12,8 @@ export async function getStaticPaths() {
 }
 
 const { essay } = Astro.props;
-const { Content } = await render(essay);
+const { Content, headings } = await render(essay);
+const { minutes } = readingTime(essay.body);
 ---
 
 <EssayLayout
@@ -20,6 +22,8 @@ const { Content } = await render(essay);
   pubDate={essay.data.pubDate}
   updatedDate={essay.data.updatedDate}
   tags={essay.data.tags}
+  readingMinutes={minutes}
+  headings={headings}
 >
   <Content />
 </EssayLayout>

@@ -2,12 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EssayCard from '../components/EssayCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import Avatar from '../components/Avatar.astro';
+import StatLine from '../components/StatLine.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { getCollection } from 'astro:content';
 import { SOCIAL } from '../consts.ts';
+import { readingTime } from '../utils/reading-time.ts';
 
 const essays = (await getCollection('writing', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+  .slice(0, 4);
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order)
@@ -15,50 +23,97 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
 ---
 
 <BaseLayout>
-  <section class="mb-16">
-    <h1 class="text-[34px] font-semibold tracking-tight leading-tight">Imran Ahamed</h1>
-    <p class="mt-4 text-[18px] text-[color:var(--color-ink-muted)] leading-relaxed">
-      I build applied AI/ML systems. Currently co-founding
-      <a href={SOCIAL.vezran} target="_blank" rel="noopener noreferrer">VEZRAN</a> —
-      agentic AI for security operations. Previously: Senior Data Scientist at Starbucks and FedEx.
-      Half my career was pre-LLM ML.
+  {/* HERO */}
+  <section class="pt-2 pb-8">
+    <div class="flex items-start gap-5">
+      <Avatar size={72} />
+      <div class="flex-1 min-w-0">
+        <h1 class="text-[40px] sm:text-[48px] font-semibold tracking-tight leading-[1.05]">
+          Hi, I&rsquo;m Imran.
+        </h1>
+        <p class="mt-3 text-[18px] text-[color:var(--color-ink-muted)] leading-relaxed">
+          I build applied AI/ML systems. Currently co-founding
+          <a href={SOCIAL.vezran} target="_blank" rel="noopener noreferrer">VEZRAN</a> —
+          shipping <a href={SOCIAL.zyberpol} target="_blank" rel="noopener noreferrer">Zyberpol</a>, an
+          agentic SOC platform. Previously Senior Data Scientist at Starbucks and FedEx.
+        </p>
+      </div>
+    </div>
+
+    <p class="mt-5 text-[18px] text-[color:var(--color-ink-muted)] leading-relaxed">
+      I write about the unglamorous parts of production AI — multi-agent eval, RAG that survives traffic,
+      and what the demos leave out. No threads. No hot takes.
     </p>
-    <p class="mt-4 text-[18px] text-[color:var(--color-ink-muted)] leading-relaxed">
-      Focused on multi-agent systems and RAG pipelines that survive contact with production.
-      I write about the unglamorous parts — eval design, infrastructure, what actually ships.
-    </p>
+
+    <StatLine />
   </section>
 
-  <section class="mb-16">
-    <div class="flex items-baseline justify-between mb-2">
-      <h2 class="text-[14px] font-mono uppercase tracking-wider text-[color:var(--color-ink-muted)]">
-        Writing
+  {/* WRITING */}
+  <section class="mb-14">
+    <div class="flex items-baseline justify-between mb-1">
+      <h2 class="text-[12px] font-mono uppercase tracking-wider text-[color:var(--color-ink-faint)]">
+        Writing &mdash; long-form essays
       </h2>
-      <a href="/writing" class="text-[13px] font-mono">all →</a>
+      <a href="/writing" class="text-[13px] font-mono text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-accent)]">all →</a>
     </div>
     {
       essays.length === 0 ? (
         <p class="text-[color:var(--color-ink-muted)] py-4">No essays yet.</p>
       ) : (
-        essays.map((essay) => (
-          <EssayCard
-            title={essay.data.title}
-            description={essay.data.description}
-            pubDate={essay.data.pubDate}
-            href={`/writing/${essay.id}/`}
-            tags={essay.data.tags}
-          />
-        ))
+        essays.map((essay) => {
+          const { minutes } = readingTime(essay.body);
+          return (
+            <EssayCard
+              title={essay.data.title}
+              description={essay.data.description}
+              pubDate={essay.data.pubDate}
+              href={`/writing/${essay.id}/`}
+              tags={essay.data.tags}
+              readingMinutes={minutes}
+              featured={essay.data.featured}
+            />
+          );
+        })
       )
     }
   </section>
 
-  <section class="mb-16">
-    <div class="flex items-baseline justify-between mb-2">
-      <h2 class="text-[14px] font-mono uppercase tracking-wider text-[color:var(--color-ink-muted)]">
+  {/* NOTES */}
+  <section class="mb-14">
+    <div class="flex items-baseline justify-between mb-1">
+      <h2 class="text-[12px] font-mono uppercase tracking-wider text-[color:var(--color-ink-faint)]">
+        Notes &mdash; short-form, work-in-progress
+      </h2>
+      <a href="/notes" class="text-[13px] font-mono text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-accent)]">all →</a>
+    </div>
+    {
+      notes.length === 0 ? (
+        <p class="text-[color:var(--color-ink-muted)] py-4">No notes yet.</p>
+      ) : (
+        <ul class="divide-y divide-[var(--color-rule)]">
+          {notes.map((note) => (
+            <li class="py-3 flex items-baseline justify-between gap-4">
+              <a
+                href={`/notes/${note.id}/`}
+                class="text-[16px] text-[color:var(--color-ink)] no-underline hover:text-[color:var(--color-accent)] hover:no-underline flex-1 min-w-0"
+              >
+                {note.data.title}
+              </a>
+              <FormattedDate date={note.data.pubDate} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+
+  {/* PROJECTS */}
+  <section class="mb-14">
+    <div class="flex items-baseline justify-between mb-1">
+      <h2 class="text-[12px] font-mono uppercase tracking-wider text-[color:var(--color-ink-faint)]">
         Projects
       </h2>
-      <a href="/projects" class="text-[13px] font-mono">all →</a>
+      <a href="/projects" class="text-[13px] font-mono text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-accent)]">all →</a>
     </div>
     {
       projects.length === 0 ? (
@@ -70,21 +125,24 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
             description={project.data.description}
             role={project.data.role}
             stack={project.data.stack}
+            status={project.data.status}
             href={`/projects/${project.id}/`}
             externalLink={project.data.link}
+            featured={project.data.featured}
           />
         ))
       )
     }
   </section>
 
+  {/* NEWSLETTER */}
   <section class="border-t border-[var(--color-rule)] pt-8">
-    <h2 class="text-[14px] font-mono uppercase tracking-wider text-[color:var(--color-ink-muted)] mb-3">
+    <h2 class="text-[12px] font-mono uppercase tracking-wider text-[color:var(--color-ink-faint)] mb-3">
       Newsletter
     </h2>
-    <p class="text-[16px] text-[color:var(--color-ink-muted)] leading-relaxed mb-4">
+    <p class="text-[16px] text-[color:var(--color-ink-muted)] leading-relaxed mb-4 max-w-[60ch]">
       Field notes on applied AI — agent eval, RAG in production, what the demos leave out.
-      No threads. No hot takes.
+      One essay every couple of weeks. No spam.
     </p>
     <form
       action="#"
@@ -95,7 +153,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
         type="email"
         name="email"
         required
-        placeholder="you@example.com"
+        placeholder="you@domain.com"
         class="flex-1 px-3 py-2 text-[15px] border border-[var(--color-rule)] rounded-md bg-transparent focus:outline-none focus:border-[color:var(--color-accent)]"
       />
       <button

@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import EssayCard from '../../../components/EssayCard.astro';
+import { getCollection } from 'astro:content';
+import { readingTime } from '../../../utils/reading-time.ts';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('writing', ({ data }) => !data.draft);
+  const tagSet = new Set<string>();
+  for (const essay of essays) {
+    for (const tag of essay.data.tags) tagSet.add(tag);
+  }
+  return [...tagSet].map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      essays: essays
+        .filter((e) => e.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag, essays } = Astro.props;
+---
+
+<BaseLayout
+  title={`Tag: ${tag}`}
+  description={`Essays tagged ${tag}.`}
+>
+  <header class="mb-8">
+    <a
+      href="/writing"
+      class="text-[13px] text-[color:var(--color-ink-muted)] font-mono no-underline hover:no-underline hover:text-[color:var(--color-ink)]"
+    >
+      ← writing
+    </a>
+    <h1 class="mt-3 text-[40px] font-semibold tracking-tight">
+      <span class="text-[color:var(--color-ink-muted)] font-mono text-[24px]">#</span>{tag}
+    </h1>
+    <p class="mt-3 text-[15px] text-[color:var(--color-ink-muted)] font-mono">
+      {essays.length} essay{essays.length === 1 ? '' : 's'}
+    </p>
+  </header>
+
+  {
+    essays.map((essay) => {
+      const { minutes } = readingTime(essay.body);
+      return (
+        <EssayCard
+          title={essay.data.title}
+          description={essay.data.description}
+          pubDate={essay.data.pubDate}
+          href={`/writing/${essay.id}/`}
+          tags={essay.data.tags}
+          readingMinutes={minutes}
+          featured={essay.data.featured}
+        />
+      );
+    })
+  }
+</BaseLayout>
