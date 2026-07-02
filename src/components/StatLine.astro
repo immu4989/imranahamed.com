@@ -1,18 +1,36 @@
 ---
 import { STATS } from '../consts.ts';
+
+const colorMap: Record<string, string> = {
+  'brand': 'var(--color-brand)',
+  'accent-1': 'var(--color-accent-1)',
+  'accent-2': 'var(--color-accent-2)',
+  'accent-3': 'var(--color-accent-3)',
+  'accent-4': 'var(--color-accent-4)',
+  'accent-5': 'var(--color-accent-5)',
+};
 ---
 
-<dl class="grid grid-cols-3 gap-6 border-y border-[var(--color-rule)] py-5 my-8">
+<dl class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-10">
   {
-    STATS.map((stat) => (
-      <div>
-        <dt class="text-[12px] uppercase tracking-wider font-mono text-[color:var(--color-ink-faint)] mb-1">
-          {stat.label}
-        </dt>
-        <dd class="text-[26px] tabular font-medium tracking-tight text-[color:var(--color-ink)] leading-none">
-          {stat.value}
-        </dd>
-      </div>
-    ))
+    STATS.map((stat) => {
+      const color = colorMap[stat.accent] ?? 'var(--color-brand)';
+      return (
+        <div
+          class="card !p-4"
+          style={`border-color: ${color}22;`}
+        >
+          <dd
+            class="text-[30px] sm:text-[32px] tabular font-semibold tracking-tight leading-none"
+            style={`color: ${color};`}
+          >
+            {stat.value}
+          </dd>
+          <dt class="mt-2 text-[12px] uppercase tracking-wider font-mono text-[color:var(--color-ink-muted)]">
+            {stat.label}
+          </dt>
+        </div>
+      );
+    })
   }
 </dl>

@@ -1,0 +1,81 @@
+---
+import type { ContribProject } from '../consts.ts';
+
+interface Props {
+  project: ContribProject;
+}
+const { project } = Astro.props;
+
+const merged = project.prs.filter((p) => p.status === 'merged').length;
+const open = project.prs.filter((p) => p.status === 'open').length;
+---
+
+<article class="card mb-5" style={`border-top: 3px solid ${project.color};`}>
+  <header class="mb-3">
+    <div class="flex items-baseline justify-between gap-4 flex-wrap">
+      <div class="flex items-baseline gap-2 flex-wrap">
+        <h3 class="text-[20px] font-display font-semibold tracking-tight">
+          <a
+            href={project.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[color:var(--color-ink)] no-underline hover:no-underline hover:text-[color:var(--color-brand-vivid)]"
+          >
+            {project.name}
+          </a>
+        </h3>
+        <span class="text-[13px] font-mono text-[color:var(--color-ink-faint)]">
+          {project.repo}
+        </span>
+      </div>
+      <div class="flex items-center gap-2 text-[12px] font-mono">
+        <span
+          class="px-2 py-[2px] rounded-full text-white"
+          style={`background: ${project.color};`}
+        >
+          {merged} merged
+        </span>
+        {open > 0 && (
+          <span class="px-2 py-[2px] rounded-full text-[color:var(--color-ink-muted)] border border-[var(--color-rule)]">
+            {open} open
+          </span>
+        )}
+      </div>
+    </div>
+    <p class="mt-2 text-[15px] text-[color:var(--color-ink-muted)] leading-snug">
+      {project.description}
+    </p>
+    <p class="mt-1 text-[13.5px] font-medium" style={`color: ${project.color};`}>
+      {project.focus}
+    </p>
+  </header>
+
+  <ul class="divide-y divide-[var(--color-rule)]">
+    {
+      project.prs.map((pr) => (
+        <li class="py-2 flex items-baseline justify-between gap-4">
+          <a
+            href={pr.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-[14.5px] flex-1 min-w-0 no-underline hover:underline"
+          >
+            <span class="font-mono text-[color:var(--color-ink-faint)] mr-2">#{pr.number}</span>
+            <span class="text-[color:var(--color-ink)]">{pr.title}</span>
+          </a>
+          <span
+            class="text-[10.5px] uppercase tracking-wider font-mono shrink-0"
+            style={
+              pr.status === 'merged'
+                ? `color: ${project.color};`
+                : 'color: var(--color-ink-faint);'
+            }
+          >
+            {pr.status}
+            {pr.merged ? ` · ${pr.merged}` : ''}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</article>

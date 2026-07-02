@@ -8,12 +8,17 @@ import { SOCIAL } from '../consts.ts';
   title="About"
   description="Imran Ahamed — applied AI/ML engineer, co-founder at VEZRAN, ex-Starbucks, ex-FedEx."
 >
-  <header class="flex items-start gap-5 mb-8">
-    <Avatar size={72} />
+  <header class="flex flex-col sm:flex-row items-start gap-6 mb-10 p-6 sm:p-8 rounded-3xl" style="background: var(--gradient-hero);">
+    <Avatar size={104} />
     <div class="flex-1 min-w-0">
-      <h1 class="text-[40px] font-semibold tracking-tight leading-[1.05]">About</h1>
+      <span class="inline-flex items-center gap-2 text-[12px] font-mono uppercase tracking-wider text-[color:var(--color-brand-vivid)] bg-[color:var(--color-brand-soft)] px-3 py-1 rounded-full">
+        About
+      </span>
+      <h1 class="mt-3 text-[42px] font-display font-bold tracking-tight leading-[1.05]">
+        Applied AI/ML engineer.
+      </h1>
       <p class="mt-3 text-[17px] text-[color:var(--color-ink-muted)]">
-        Applied AI/ML engineer. Currently co-founding VEZRAN. Based in Richardson, TX.
+        Currently co-founding VEZRAN. Based in Richardson, TX.
       </p>
     </div>
   </header>
@@ -40,6 +45,21 @@ import { SOCIAL } from '../consts.ts';
       an agentic SOC platform with four working agents &mdash; Correlation, Investigation, Triage,
       Remediation &mdash; sitting on top of CrowdStrike, Okta, Splunk, and AWS. The differentiator:
       signed, audit-ready evidence for every action. Pre-seed, hiring.
+    </p>
+
+    <h2>Open source</h2>
+    <p>
+      I contribute to the ML/AI infrastructure I depend on &mdash; sustained engagement on a handful
+      of projects rather than scattered PRs. Recent focus:
+      causal inference (<a href="https://github.com/py-why/dowhy" target="_blank" rel="noopener noreferrer">dowhy</a>,
+      <a href="https://github.com/py-why/EconML" target="_blank" rel="noopener noreferrer">EconML</a>),
+      AutoML (<a href="https://github.com/microsoft/FLAML" target="_blank" rel="noopener noreferrer">FLAML</a>),
+      conformal prediction (<a href="https://github.com/scikit-learn-contrib/MAPIE" target="_blank" rel="noopener noreferrer">MAPIE</a>),
+      interpretability (<a href="https://github.com/MAIF/shapash" target="_blank" rel="noopener noreferrer">Shapash</a>),
+      LLM red-teaming (<a href="https://github.com/microsoft/PyRIT" target="_blank" rel="noopener noreferrer">PyRIT</a>),
+      fairness (<a href="https://github.com/fairlearn/fairlearn" target="_blank" rel="noopener noreferrer">fairlearn</a>),
+      and MLOps (<a href="https://github.com/mlflow/mlflow" target="_blank" rel="noopener noreferrer">mlflow</a>).
+      Full list on the <a href="/contributions">contributions</a> page.
     </p>
 
     <h2>What I shipped before</h2>
@@ -78,6 +98,7 @@ import { SOCIAL } from '../consts.ts';
       <li><a href={SOCIAL.github} target="_blank" rel="noopener noreferrer">GitHub</a></li>
       <li><a href={SOCIAL.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
       <li><a href={SOCIAL.scholar} target="_blank" rel="noopener noreferrer">Google Scholar</a></li>
+      <li><a href={SOCIAL.substack} target="_blank" rel="noopener noreferrer">Substack newsletter</a></li>
       <li><a href={SOCIAL.email}>Email</a></li>
     </ul>
   </article>

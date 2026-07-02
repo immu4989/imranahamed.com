@@ -8,17 +8,21 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  wide?: boolean;
 }
 
 const {
   title,
   description = SITE.description,
   ogImage,
+  wide = false,
 } = Astro.props;
 
 const pageTitle = title ? `${title} · ${SITE.title}` : SITE.title;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 const socialImage = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+
+const mainWidth = wide ? 'max-w-5xl' : 'max-w-3xl';
 ---
 
 <!doctype html>
@@ -30,10 +34,18 @@ const socialImage = ogImage ? new URL(ogImage, Astro.site).toString() : undefine
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={SITE.author} />
+
+    <meta name="theme-color" content="#6366f1" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
@@ -49,7 +61,7 @@ const socialImage = ogImage ? new URL(ogImage, Astro.site).toString() : undefine
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />
-    <main class="flex-1 mx-auto w-full max-w-3xl px-6 py-10">
+    <main class:list={['flex-1 mx-auto w-full px-6 py-10', mainWidth]}>
       <slot />
     </main>
     <Footer />

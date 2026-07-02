@@ -24,16 +24,16 @@ const {
 
 const statusConfig = {
   active:   { label: 'Active',   color: '#10b981' },
-  shipped:  { label: 'Shipped',  color: '#94a3b8' },
+  shipped:  { label: 'Shipped',  color: '#8b5cf6' },
   archived: { label: 'Archived', color: '#a8a29e' },
 }[status];
 ---
 
-<article class="group py-6 border-b border-[var(--color-rule)] last:border-0">
+<article class="card group mb-5" style={`box-shadow: inset 3px 0 0 ${statusConfig.color}, var(--shadow-card);`}>
   <div class="flex items-baseline justify-between gap-4 mb-1 flex-wrap">
     <div class="flex items-baseline gap-2 flex-wrap">
       <span
-        class="inline-flex items-center gap-1.5 text-[10.5px] uppercase tracking-wider font-mono"
+        class="inline-flex items-center gap-1.5 text-[10.5px] uppercase tracking-wider font-mono font-medium"
         style={`color: ${statusConfig.color};`}
       >
         <span
@@ -43,7 +43,7 @@ const statusConfig = {
         {statusConfig.label}
       </span>
       {featured && (
-        <span class="text-[10.5px] uppercase tracking-wider font-mono text-[color:var(--color-accent)] bg-[color:var(--color-accent-soft)] px-1.5 py-[1px] rounded">
+        <span class="text-[10.5px] uppercase tracking-wider font-mono font-medium text-white px-2 py-[2px] rounded-full" style="background: var(--gradient-brand);">
           Featured
         </span>
       )}
@@ -51,10 +51,10 @@ const statusConfig = {
     {role && <span class="text-[12.5px] text-[color:var(--color-ink-faint)] font-mono">{role}</span>}
   </div>
 
-  <h3 class="text-[19px] font-semibold tracking-tight leading-snug mt-1">
+  <h3 class="text-[19px] font-display font-semibold tracking-tight leading-snug mt-1">
     <a
       href={href}
-      class="text-[color:var(--color-ink)] no-underline hover:no-underline group-hover:text-[color:var(--color-accent)]"
+      class="text-[color:var(--color-ink)] no-underline hover:no-underline group-hover:text-[color:var(--color-brand-vivid)] transition-colors"
     >
       {title}
     </a>
@@ -80,7 +80,7 @@ const statusConfig = {
           href={externalLink}
           target="_blank"
           rel="noopener noreferrer"
-          class="text-[13px] font-mono text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-accent)]"
+          class="text-[13px] font-mono text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-brand-vivid)]"
         >
           {externalLink.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')} ↗
         </a>

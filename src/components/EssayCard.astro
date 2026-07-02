@@ -22,18 +22,18 @@ const {
 } = Astro.props;
 ---
 
-<article class="group py-6 border-b border-[var(--color-rule)] last:border-0">
-  <div class="flex items-baseline justify-between gap-4 mb-1">
+<article class="card group mb-5">
+  <div class="flex items-baseline justify-between gap-4 mb-1 flex-wrap">
     <div class="flex items-baseline gap-2 flex-wrap">
       {featured && (
-        <span class="text-[10.5px] uppercase tracking-wider font-mono text-[color:var(--color-accent)] bg-[color:var(--color-accent-soft)] px-1.5 py-[1px] rounded">
+        <span class="text-[10.5px] uppercase tracking-wider font-mono font-medium text-white px-2 py-[2px] rounded-full" style="background: var(--gradient-brand);">
           Featured
         </span>
       )}
-      <h3 class="text-[19px] font-semibold tracking-tight leading-snug">
+      <h3 class="text-[19px] font-display font-semibold tracking-tight leading-snug">
         <a
           href={href}
-          class="text-[color:var(--color-ink)] no-underline hover:no-underline group-hover:text-[color:var(--color-accent)]"
+          class="text-[color:var(--color-ink)] no-underline hover:no-underline group-hover:text-[color:var(--color-brand-vivid)] transition-colors"
         >
           {title}
         </a>
@@ -48,7 +48,7 @@ const {
     {readingMinutes && (
       <>
         <span class="text-[color:var(--color-ink-faint)] text-[13px]">·</span>
-        <span class="text-[13px] text-[color:var(--color-ink-muted)]">{readingMinutes} min</span>
+        <span class="text-[13px] text-[color:var(--color-ink-muted)]">{readingMinutes} min read</span>
       </>
     )}
     {

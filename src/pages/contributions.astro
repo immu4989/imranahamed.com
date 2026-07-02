@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContribCard from '../components/ContribCard.astro';
+import { CONTRIBUTIONS, SECURITY_WORK } from '../consts.ts';
+
+const totalMerged = CONTRIBUTIONS.reduce(
+  (n, p) => n + p.prs.filter((pr) => pr.status === 'merged').length,
+  0,
+);
+const totalOpen = CONTRIBUTIONS.reduce(
+  (n, p) => n + p.prs.filter((pr) => pr.status === 'open').length,
+  0,
+);
+const projectCount = CONTRIBUTIONS.length;
+---
+
+<BaseLayout
+  wide
+  title="Open source contributions"
+  description="Merged PRs across major ML / AI open source projects — dowhy, FLAML, MAPIE, Shapash, PyRIT, imbalanced-learn, EconML, fairlearn, mlflow."
+>
+  <header class="mb-10">
+    <span class="inline-flex items-center gap-2 text-[12px] font-mono uppercase tracking-wider text-white px-3 py-1 rounded-full" style="background: var(--gradient-brand);">
+      Open source
+    </span>
+    <h1 class="mt-4 text-[42px] sm:text-[52px] font-display font-bold tracking-tight leading-[1.05]">
+      <span class="text-gradient">{totalMerged}+</span> merged PRs across
+      <span class="text-gradient">{projectCount}</span> ML/AI projects.
+    </h1>
+    <p class="mt-4 text-[17px] text-[color:var(--color-ink-muted)] leading-relaxed max-w-[65ch]">
+      Sustained contributions to the ML/AI infrastructure I depend on &mdash; causal inference,
+      AutoML, conformal prediction, interpretability, red-teaming, fairness, MLOps. Detail-oriented
+      fixes over drive-by PRs.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-4 text-[14px] font-mono">
+      <span class="card !p-3">
+        <span class="text-[color:var(--color-brand-vivid)] font-semibold text-[22px] tabular">{totalMerged}</span>
+        <span class="text-[color:var(--color-ink-muted)] ml-2">merged</span>
+      </span>
+      <span class="card !p-3">
+        <span class="text-[color:var(--color-ink)] font-semibold text-[22px] tabular">{totalOpen}</span>
+        <span class="text-[color:var(--color-ink-muted)] ml-2">open</span>
+      </span>
+      <span class="card !p-3">
+        <span class="text-[color:var(--color-ink)] font-semibold text-[22px] tabular">{projectCount}</span>
+        <span class="text-[color:var(--color-ink-muted)] ml-2">projects</span>
+      </span>
+    </div>
+  </header>
+
+  {/* PROJECTS */}
+  {
+    CONTRIBUTIONS.map((project) => (
+      <ContribCard project={project} />
+    ))
+  }
+
+  {/* SECURITY */}
+  {SECURITY_WORK.length > 0 && (
+    <section class="mt-16">
+      <h2 class="text-[22px] font-display font-semibold tracking-tight mb-3" style="color: var(--color-accent-2);">
+        Security research
+      </h2>
+      <p class="text-[15.5px] text-[color:var(--color-ink-muted)] mb-6 max-w-[60ch]">
+        Coordinated disclosures and security-adjacent tooling for the AI/ML projects I depend on.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        {SECURITY_WORK.map((item) => (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="card block no-underline hover:no-underline"
+            style="border-top: 3px solid var(--color-accent-2);"
+          >
+            <div class="flex items-baseline justify-between gap-3">
+              <span class="text-[11px] font-mono uppercase tracking-wider" style="color: var(--color-accent-2);">
+                {item.kind}
+              </span>
+              <span class="text-[11px] font-mono text-[color:var(--color-ink-faint)]">{item.date}</span>
+            </div>
+            <h3 class="mt-2 text-[17px] font-display font-semibold text-[color:var(--color-ink)]">
+              {item.title}
+            </h3>
+            <p class="mt-2 text-[14px] text-[color:var(--color-ink-muted)] leading-snug">
+              {item.summary}
+            </p>
+            <p class="mt-3 text-[12px] font-mono text-[color:var(--color-ink-faint)]">
+              {item.id} · {item.org}
+            </p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* PHILOSOPHY */}
+  <section class="mt-16 card-gradient">
+    <div>
+      <h2 class="text-[20px] font-display font-semibold tracking-tight mb-3">How I pick what to contribute</h2>
+      <ul class="text-[15.5px] text-[color:var(--color-ink-muted)] leading-relaxed space-y-2 pl-4 list-disc">
+        <li><strong>Issue-before-PR.</strong> Post a well-researched reproduction + root cause first. Land the diff second.</li>
+        <li><strong>Feature-fix over new feature.</strong> Merged bug fixes with regression tests read louder than trivial adds.</li>
+        <li><strong>Concentrate over scatter.</strong> Sustained engagement on one repo &gt; scattered PRs across many.</li>
+        <li><strong>No AI-authorship claims.</strong> Every PR is my own work &mdash; no Co-Authored-By bot trailer, no ghost-driven code.</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
