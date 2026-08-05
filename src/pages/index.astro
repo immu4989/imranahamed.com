@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar.astro';
 import StatLine from '../components/StatLine.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
+import RepoMarquee from '../components/RepoMarquee.astro';
 import { getCollection } from 'astro:content';
 import { SOCIAL, CONTRIBUTIONS, SECURITY_WORK } from '../consts.ts';
 import { readingTime } from '../utils/reading-time.ts';
@@ -106,28 +107,7 @@ const totalOpen = CONTRIBUTIONS.reduce(
       </h2>
       <a href="/contributions" class="text-[13px] font-mono text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-brand-vivid)]">all →</a>
     </div>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {
-        CONTRIBUTIONS.slice(0, 6).map((project) => {
-          const merged = project.prs.filter((p) => p.status === 'merged').length;
-          return (
-            <a href="/contributions/" class="card block no-underline hover:no-underline" style={`border-top: 3px solid ${project.color};`}>
-              <div class="flex items-baseline justify-between">
-                <h3 class="text-[16px] font-display font-semibold text-[color:var(--color-ink)]">
-                  {project.name}
-                </h3>
-                <span class="text-[11px] font-mono px-2 py-[1px] rounded-full text-white" style={`background: ${project.color};`}>
-                  {merged}
-                </span>
-              </div>
-              <p class="mt-1 text-[13px] text-[color:var(--color-ink-muted)] leading-snug">
-                {project.focus}
-              </p>
-            </a>
-          );
-        })
-      }
-    </div>
+    <RepoMarquee />
   </section>
 
   {/* SECURITY */}

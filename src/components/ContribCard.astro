@@ -8,9 +8,27 @@ const { project } = Astro.props;
 
 const merged = project.prs.filter((p) => p.status === 'merged').length;
 const open = project.prs.filter((p) => p.status === 'open').length;
+const socialImg = `https://opengraph.githubassets.com/hero/${project.repo}`;
 ---
 
-<article class="card mb-5" style={`border-top: 3px solid ${project.color};`}>
+<article class="card mb-5 !p-0 overflow-hidden" style={`border-top: 3px solid ${project.color};`}>
+  <a
+    href={project.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="block no-underline hover:no-underline"
+  >
+    <img
+      src={socialImg}
+      alt={`${project.repo} repository card`}
+      width="1280"
+      height="640"
+      loading="lazy"
+      decoding="async"
+      class="w-full aspect-[2/1] object-cover border-b border-[var(--color-rule)]"
+    />
+  </a>
+  <div class="p-5 sm:p-6">
   <header class="mb-3">
     <div class="flex items-baseline justify-between gap-4 flex-wrap">
       <div class="flex items-baseline gap-2 flex-wrap">
@@ -78,4 +96,5 @@ const open = project.prs.filter((p) => p.status === 'open').length;
       ))
     }
   </ul>
+  </div>
 </article>

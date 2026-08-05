@@ -1,0 +1,54 @@
+---
+import { CONTRIBUTIONS } from '../consts.ts';
+
+// GitHub renders a social (open-graph) card PNG for every public repo.
+// The first path segment is a cache-buster; any string works.
+const cards = CONTRIBUTIONS.map((p) => ({
+  name: p.name,
+  repo: p.repo,
+  url: p.url,
+  color: p.color,
+  merged: p.prs.filter((pr) => pr.status === 'merged').length,
+  img: `https://opengraph.githubassets.com/hero/${p.repo}`,
+}));
+
+// Track is duplicated so the -50% translate loops seamlessly.
+const loop = [...cards, ...cards];
+---
+
+<div class="marquee" aria-label="Repositories I've contributed to">
+  <div class="marquee-track">
+    {
+      loop.map((card, i) => (
+        <a
+          href={card.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="repo-card"
+          aria-hidden={i >= cards.length ? 'true' : undefined}
+          tabindex={i >= cards.length ? -1 : undefined}
+        >
+          <img
+            src={card.img}
+            alt={`${card.repo} repository card`}
+            width="640"
+            height="320"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="repo-card-footer" style={`border-top-color: ${card.color};`}>
+            <span class="font-mono text-[12.5px] text-[color:var(--color-ink-muted)] truncate">
+              {card.repo}
+            </span>
+            <span
+              class="text-[11px] font-mono px-2 py-[1px] rounded-full text-white shrink-0"
+              style={`background: ${card.color};`}
+            >
+              {card.merged} merged
+            </span>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</div>
